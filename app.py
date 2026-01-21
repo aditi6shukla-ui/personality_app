@@ -1,17 +1,24 @@
 import streamlit as st
 
-st.title("Personality Snapshot")
+st.set_page_config(page_title="Mood Machine", layout="centered")
 
-sleep = st.selectbox("Average sleep per night", ["< 6 hours", "6–7 hours", "> 7 hours"])
-risk = st.selectbox("Risk preference", ["Low", "Medium", "High"])
-social = st.selectbox("Social energy", ["Low", "Medium", "High"])
+energy = st.slider("Energy level", 0, 100, 50)
+logic = st.slider("Logic vs intuition", 0, 100, 50)
+chaos = st.slider("Chaos tolerance", 0, 100, 50)
 
-if sleep and risk and social:
-    if sleep == "< 6 hours" and risk == "High":
-        st.write("You are an impulsive optimizer: fast-moving, high-energy, low patience.")
-    elif sleep == "> 7 hours" and social == "Low":
-        st.write("You are a deliberate thinker: calm, analytical, and self-directed.")
-    elif risk == "Low" and social == "High":
-        st.write("You are a cooperative stabilizer: reliable, people-oriented, risk-aware.")
-    else:
-        st.write("You are a balanced generalist: adaptable, situational, and pragmatic.")
+score = energy + logic - chaos
+
+if score > 150:
+    st.markdown("## Cognitive State: Strategic Overdrive")
+    st.write("High output, high clarity, low noise. Dangerous when unchecked.")
+elif score > 80:
+    st.markdown("## Cognitive State: Focused Operator")
+    st.write("Balanced execution mode. Reliable and controlled.")
+elif score > 20:
+    st.markdown("## Cognitive State: Adaptive Wanderer")
+    st.write("Exploratory, flexible, context-sensitive.")
+else:
+    st.markdown("## Cognitive State: Entropic Drift")
+    st.write("Low structure, high randomness. Creative but unstable.")
+
+st.write("Raw Signal Value:", score)
