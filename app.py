@@ -27,9 +27,9 @@ if st.session_state.show:
             f"<div style='width:100px;height:100px;background:{color};margin:10px'></div>",
             unsafe_allow_html=True
         )
-        time.sleep(0.6)
+        time.sleep(0.5)
     st.session_state.show = False
-    st.experimental_rerun()
+    st.rerun()
 
 st.write(f"Round: {st.session_state.round}")
 
