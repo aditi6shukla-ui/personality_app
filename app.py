@@ -1,49 +1,40 @@
 import streamlit as st
 import random
-import time
 
-st.set_page_config(page_title="Color Memory Game", layout="centered")
+st.set_page_config(page_title="Message Garden", layout="centered")
 
-colors = ["red", "green", "blue", "yellow"]
+flowers = ["🌸", "🌼", "🌷", "🌻", "💐", "🌹"]
 
-if "sequence" not in st.session_state:
-    st.session_state.sequence = []
-    st.session_state.user_input = []
-    st.session_state.round = 0
-    st.session_state.show = False
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
-st.title("Color Memory Game")
+st.title("Message Garden")
+st.write("Type a message and watch it bloom.")
 
-if st.button("Start / Next Round"):
-    st.session_state.user_input = []
-    st.session_state.round += 1
-    st.session_state.sequence.append(random.choice(colors))
-    st.session_state.show = True
+msg = st.text_input("Your message", label_visibility="collapsed")
 
-if st.session_state.show:
-    st.write("Memorize the sequence")
-    for color in st.session_state.sequence:
-        st.markdown(
-            f"<div style='width:100px;height:100px;background:{color};margin:10px'></div>",
-            unsafe_allow_html=True
-        )
-        time.sleep(0.5)
-    st.session_state.show = False
+if msg:
+    flower = random.choice(flowers)
+    st.session_state.messages.append((msg, flower))
+    st.session_state.last = msg
+    st.session_state.last = None
     st.rerun()
 
-st.write(f"Round: {st.session_state.round}")
+for text, flower in reversed(st.session_state.messages):
+    st.markdown(
+        f"""
+        <div style="
+            background: linear-gradient(135deg, #ffe6f0, #e6f7ff);
+            padding: 16px;
+            margin: 10px 0;
+            border-radius: 16px;
+            text-align: center;
+            font-size: 20px;
+        ">
+            {flower} {text} {flower}
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-cols = st.columns(4)
-for i, color in enumerate(colors):
-    if cols[i].button(color.capitalize()):
-        st.session_state.user_input.append(color)
-
-if len(st.session_state.user_input) == len(st.session_state.sequence):
-    if st.session_state.user_input == st.session_state.sequence:
-        st.success("Correct sequence")
-    else:
-        st.error("Wrong sequence. Game reset.")
-        st.session_state.sequence = []
-        st.session_state.user_input = []
-        st.session_state.round = 0
 
